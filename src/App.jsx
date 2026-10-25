@@ -246,7 +246,7 @@ function App() {
             <SectionLabel number="04">VAMOS CONVERSAR</SectionLabel>
             <h2>Tem uma ideia?<br /><span className="gradient-text">Vamos tirar do papel.</span></h2>
             <p>O próximo projeto pode começar com uma conversa.</p>
-            <a className="button button-primary" href="mailto:contato@exemplo.com">Entrar em contato <IonIcon icon={arrowForwardOutline} /></a>
+            <a className="button button-primary" href="mailto:contato.jeanholiveira@gmail.com">Entrar em contato <IonIcon icon={arrowForwardOutline} /></a>
             <div className="contact-decoration" aria-hidden="true">H<span>.</span></div>
           </div>
         </section>
