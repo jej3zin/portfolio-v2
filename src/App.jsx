@@ -15,7 +15,7 @@ const projects = [
     kind: 'Comunidade',
     number: '01',
     accent: 'violet',
-    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://pjt-otakuhub.netlify.app/',
+    preview: '/previews/otakuhub.jpg',
   },
   {
     name: 'Máfia do Pix',
@@ -25,7 +25,7 @@ const projects = [
     kind: 'Web app',
     number: '02',
     accent: 'blue',
-    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://mafiadopix.netlify.app/',
+    preview: '/previews/mafiadopix.jpg',
   },
   {
     name: 'Spawnverse',
@@ -35,7 +35,7 @@ const projects = [
     kind: 'Experimento',
     number: '03',
     accent: 'green',
-    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://spawnverse.netlify.app/',
+    preview: '/previews/spawnverse.jpg',
   },
 ];
 
@@ -88,6 +88,8 @@ function SectionLabel({ children, number }) {
 }
 
 function WebsiteCard({ project }) {
+  const [previewFailed, setPreviewFailed] = useState(false);
+
   return (
     <article className={`project-card accent-${project.accent}`}>
       <div className="project-top">
@@ -95,7 +97,9 @@ function WebsiteCard({ project }) {
         <span className="project-category">{project.kind}</span>
       </div>
       <a className="project-preview" href={project.url} target="_blank" rel="noreferrer" aria-label={`Abrir ${project.name}`}>
-        <img src={project.preview} alt={`Prévia do site ${project.name}`} loading="lazy" />
+        {previewFailed
+          ? <span className="preview-fallback" aria-hidden="true"><IonIcon icon={globeOutline} /></span>
+          : <img src={project.preview} alt={`Prévia do site ${project.name}`} loading="lazy" onError={() => setPreviewFailed(true)} />}
         <span className="preview-overlay"><IonIcon icon={openOutline} /> Abrir projeto</span>
       </a>
       <div className="project-copy">
