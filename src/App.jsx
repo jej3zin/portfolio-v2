@@ -2,40 +2,48 @@ import { useState } from 'react';
 import {
   logoGithub, logoInstagram, mailOutline, arrowUpOutline, arrowForwardOutline,
   codeSlashOutline, gameControllerOutline, globeOutline, terminalOutline,
-  menuOutline, closeOutline, openOutline, sparklesOutline
+  menuOutline, closeOutline, openOutline, sparklesOutline, filterOutline
 } from 'ionicons/icons';
 import { IonIcon } from '@ionic/react';
 
-const websites = [
+const projects = [
   {
     name: 'OtakuHub',
     description: 'Um espaço digital para quem curte cultura otaku.',
     url: 'https://pjt-otakuhub.netlify.app/',
-    category: 'Comunidade',
+    category: 'Sites',
+    kind: 'Comunidade',
     number: '01',
     accent: 'violet',
+    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://pjt-otakuhub.netlify.app/',
   },
   {
     name: 'Máfia do Pix',
     description: 'Projeto web com identidade visual própria e foco em interação.',
     url: 'https://mafiadopix.netlify.app/',
-    category: 'Web app',
+    category: 'Aplicações',
+    kind: 'Web app',
     number: '02',
     accent: 'blue',
+    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://mafiadopix.netlify.app/',
   },
   {
     name: 'Spawnverse',
     description: 'Um universo digital em constante construção.',
     url: 'https://spawnverse.netlify.app/',
-    category: 'Experimento',
+    category: 'Sites',
+    kind: 'Experimento',
     number: '03',
     accent: 'green',
+    preview: 'https://image.thum.io/get/width/1200/crop/760/noanimate/https://spawnverse.netlify.app/',
   },
 ];
 
+const filters = ['Todos', 'Sites', 'Aplicações', 'Jogos'];
+
 function StatusPill() {
   return (
-    <div className="status-pill">
+    <div className="status-pill" title="Indicador visual do portfólio">
       <span className="status-light" aria-hidden="true" />
       <span>Portfólio online</span>
     </div>
@@ -54,7 +62,7 @@ function Header() {
         </a>
         <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Navegação principal">
           <a href="#sobre" onClick={closeMenu}>Sobre</a>
-          <a href="#sites" onClick={closeMenu}>Sites</a>
+          <a href="#sites" onClick={closeMenu}>Projetos</a>
           <a href="#jogos" onClick={closeMenu}>Jogos</a>
           <a href="#contato" onClick={closeMenu}>Contato</a>
         </nav>
@@ -83,28 +91,53 @@ function WebsiteCard({ project }) {
   return (
     <article className={`project-card accent-${project.accent}`}>
       <div className="project-top">
-        <span className="project-number">{project.number} / WEB</span>
-        <span className="project-category">{project.category}</span>
+        <span className="project-number">{project.number} / {project.category === 'Aplicações' ? 'APP' : 'WEB'}</span>
+        <span className="project-category">{project.kind}</span>
       </div>
-      <div className="project-art" aria-hidden="true">
-        <div className="art-orbit orbit-one" />
-        <div className="art-orbit orbit-two" />
-        <div className="art-core"><IonIcon icon={globeOutline} /></div>
-        <span className="art-spark spark-one">✳</span>
-        <span className="art-spark spark-two">✦</span>
-      </div>
+      <a className="project-preview" href={project.url} target="_blank" rel="noreferrer" aria-label={`Abrir ${project.name}`}>
+        <img src={project.preview} alt={`Prévia do site ${project.name}`} loading="lazy" />
+        <span className="preview-overlay"><IonIcon icon={openOutline} /> Abrir projeto</span>
+      </a>
       <div className="project-copy">
         <h3>{project.name}<span className="project-dot">.</span></h3>
         <p>{project.description}</p>
       </div>
-      <a className="project-link" href={project.url} target="_blank" rel="noreferrer">
-        Visitar projeto <IonIcon icon={arrowUpOutline} />
-      </a>
+      <div className="project-actions">
+        <a className="project-link" href={project.url} target="_blank" rel="noreferrer">
+          Visitar projeto <IonIcon icon={arrowUpOutline} />
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function FutureGameCard() {
+  return (
+    <article className="project-card accent-pink future-project">
+      <div className="project-top">
+        <span className="project-number">04 / GAME</span>
+        <span className="project-category">Em desenvolvimento</span>
+      </div>
+      <div className="future-art" aria-hidden="true">
+        <div className="future-grid" />
+        <div className="future-glow" />
+        <IonIcon icon={gameControllerOutline} />
+        <span className="future-coordinate">PLAYGROUND // 001</span>
+      </div>
+      <div className="project-copy">
+        <h3>Projeto autoral<span className="project-dot">.</span></h3>
+        <p>Um jogo ainda em planejamento. Esta área vai ganhar vida quando a primeira experiência estiver pronta.</p>
+      </div>
+      <div className="project-link project-link-muted"><span>Em breve</span><IonIcon icon={sparklesOutline} /></div>
     </article>
   );
 }
 
 function App() {
+  const [activeFilter, setActiveFilter] = useState('Todos');
+  const visibleProjects = projects.filter((project) => activeFilter === 'Todos' || project.category === activeFilter);
+  const showGame = activeFilter === 'Todos' || activeFilter === 'Jogos';
+
   return (
     <>
       <Header />
@@ -152,13 +185,32 @@ function App() {
             <div className="section-heading">
               <SectionLabel number="02">PROJETOS SELECIONADOS</SectionLabel>
               <div className="heading-row">
-                <h2>Sites & <span className="gradient-text">aplicações.</span></h2>
-                <p>Projetos publicados, experiências digitais<br className="desktop-break" /> e ideias ganhando vida.</p>
+                <div>
+                  <h2>Sites & <span className="gradient-text">aplicações.</span></h2>
+                  <p className="projects-subtitle">Uma seleção de projetos publicados e ideias em desenvolvimento.</p>
+                </div>
+                <span className="project-count"><span className="count-dot" /> {projects.length + 1} PROJETOS</span>
+              </div>
+            </div>
+            <div className="project-toolbar">
+              <span><IonIcon icon={filterOutline} /> FILTRAR POR TIPO</span>
+              <div className="project-filters" role="group" aria-label="Filtrar projetos">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    className={activeFilter === filter ? 'filter-button active' : 'filter-button'}
+                    onClick={() => setActiveFilter(filter)}
+                    aria-pressed={activeFilter === filter}
+                  >{filter}</button>
+                ))}
               </div>
             </div>
             <div className="projects-grid">
-              {websites.map((project) => <WebsiteCard key={project.name} project={project} />)}
+              {visibleProjects.map((project) => <WebsiteCard key={project.name} project={project} />)}
+              {showGame && <FutureGameCard />}
             </div>
+            {visibleProjects.length === 0 && !showGame && <p className="empty-projects">Nenhum projeto nesta categoria por enquanto.</p>}
           </div>
         </section>
 
@@ -170,7 +222,7 @@ function App() {
                 <div className="game-kicker"><IonIcon icon={gameControllerOutline} /> ÁREA DE JOGOS</div>
                 <h2>Playground<br /><span className="gradient-text">em construção.</span></h2>
                 <p>Um espaço reservado para jogos autorais e experiências interativas. O primeiro projeto ainda está sendo planejado.</p>
-                <span className="coming-soon"><span className="coming-dot" /> NOVOS PROJETOS EM BREVE</span>
+                <a className="coming-soon" href="#sites" onClick={() => setActiveFilter('Jogos')}><span className="coming-dot" /> VER PROJETO EM PREPARAÇÃO <span aria-hidden="true">↗</span></a>
               </div>
               <div className="game-visual" aria-hidden="true">
                 <div className="game-ring ring-outer" />
