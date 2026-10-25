@@ -34,4 +34,4 @@ npm run preview
 
 ## Personalização
 
-Atualize os links e descrições no array `websites` em `src/App.jsx`. Troque também o endereço `contato@exemplo.com` pelo seu e-mail antes de publicar.
+Atualize os links e descrições no array `projects` em `src/App.jsx`. As imagens de prévia ficam em `public/previews/`. Troque também o endereço `contato@exemplo.com` pelo seu e-mail antes de publicar.
