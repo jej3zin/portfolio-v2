@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Keep client-side routes working if the portfolio grows into a multi-page SPA.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
